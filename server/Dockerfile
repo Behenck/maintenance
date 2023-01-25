@@ -18,6 +18,4 @@ ENV DATABASE_URL="postgresql://root:root@host.docker.internal:5432/maintenance?s
 
 EXPOSE 3333
 
-RUN npx prisma generate
-
 CMD [ "npm", "run", "dev" ]
