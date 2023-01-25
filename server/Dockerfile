@@ -14,7 +14,7 @@ COPY . .
 
 RUN npm install
 
-ENV DATABASE_URL="postgresql://root:root@host.docker.internal:5432/maintenance?schema=public"
+ENV DATABASE_URL="postgresql://root:root@localhost:5432/maintenance?schema=public"
 
 EXPOSE 3333
 
