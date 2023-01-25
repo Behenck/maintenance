@@ -1,0 +1,71 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+// generator erd {
+//   provider  = "prisma-erd-generator"
+//   output    = "../ERD.svg"
+//   ERD_DEBUG = true
+// }
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(uuid())
+  name         String
+  departmentId String?
+  createdAt    DateTime @default(now())
+
+  Maintenance Maintenance[]
+  department  Department?   @relation(fields: [departmentId], references: [id])
+}
+
+model IpAddress {
+  ip        String  @id @unique
+  machineId String?
+
+  Machine Machine?
+}
+
+model Department {
+  id   String @id @default(uuid())
+  name String @unique
+
+  Maintenance Maintenance[]
+  User        User[]
+}
+
+model Machine {
+  id          String   @id @default(uuid())
+  ip          String   @unique
+  processor   String?
+  memory      String?
+  storage     String?
+  system      String?
+  font        String?
+  motherboard String?
+  createdAt   DateTime @default(now())
+
+  ipAddress   IpAddress     @relation(fields: [ip], references: [ip])
+  Maintenance Maintenance[]
+}
+
+model Maintenance {
+  id              String   @id @default(uuid())
+  userId          String
+  departmentId    String
+  machineId       String
+  maintenanceDate DateTime @default(now())
+  description     String?
+  createdAt       DateTime @default(now())
+
+  user       User       @relation(fields: [userId], references: [id])
+  department Department @relation(fields: [departmentId], references: [id])
+  machine    Machine    @relation(fields: [machineId], references: [id])
+}

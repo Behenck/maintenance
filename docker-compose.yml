@@ -1,0 +1,38 @@
+version: "3.9"
+services:
+  app:
+    container_name: react_vite_app
+    build:
+      context: ./web
+      dockerfile: Dockerfile
+    volumes:
+      - /usr/src/app
+    ports:
+      - '3000:3000'
+  database-maintenace-postgres:
+    image: postgres:latest
+    container_name: database-maintenace-postgres
+    hostname: localhost
+    ports:
+      - 5432:5432
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: maintenance
+    volumes:
+      - database-maintenace-postgres:/var/lib/postgresql/data
+    restart: unless-stopped
+
+  maitenance-backend:
+    stdin_open: true
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+    container_name: maintenance-backend
+    depends_on:
+      - database-maintenace-postgres
+    ports:
+      - "3333:3333"
+    restart: always
+volumes:
+  database-maintenace-postgres:
