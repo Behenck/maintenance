@@ -14,7 +14,7 @@ COPY . .
 
 RUN npm install
 
-# ENV DATABASE_URL="postgresql://root:root@localhost:5432/maintenance?schema=public"
+ENV DATABASE_URL="postgresql://root:root@intranet.santacasa.com.br:5432/maintenance?schema=public"
 
 EXPOSE 3333
 
