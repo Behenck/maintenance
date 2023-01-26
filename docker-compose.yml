@@ -34,7 +34,6 @@ services:
     ports:
       - "3333:3333"
     restart: always
-extra_hosts:
-      - "host.docker.internal:host-gateway"
+
 volumes:
   database-maintenace-postgres:
